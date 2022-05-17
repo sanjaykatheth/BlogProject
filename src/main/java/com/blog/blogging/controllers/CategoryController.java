@@ -63,6 +63,10 @@ public class CategoryController {
 	}
 	
 	
-	
+	@GetMapping
+	public String sanjayData()
+	{
+		return "sanjaydata is as";
+	}
 	
 }
