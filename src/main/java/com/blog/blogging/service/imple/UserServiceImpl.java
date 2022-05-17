@@ -25,16 +25,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
-
 		User user=this.dtoToUser(userDto);
-
 		User saveUser= this.userRepo.save(user);	
 		return this.userToUserDto(saveUser);
 	}
 
 	@Override
 	public UserDto updateUser(UserDto userDto, Integer userId) {
-
 		User user=this.userRepo.findById(userId).orElseThrow(()->
 		new ResourceNotFoundException("User", "id", userId));
 		user.setName(userDto.getName());
@@ -57,7 +54,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDto> getAllUser() {
-
 		List<User> listOfUsers=this.userRepo.findAll();
 		List<UserDto> listDtoUsers=listOfUsers.stream().map(user->this.userToUserDto(user)).collect(Collectors.toList());
 		return listDtoUsers;

@@ -24,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 	private ModelMapper modelMap;
 	@Override
 	public CategoryDto createCategory(CategoryDto categoryDto) {
-
 		Category category=this.modelMap.map(categoryDto, Category.class);
 		Category addedCat=this.catrepo.save(category);
 		return this.modelMap.map(addedCat, CategoryDto.class);
@@ -32,26 +31,16 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public CategoryDto updateCategory(CategoryDto categoryDto, Integer catId) {
-          
-		
 		Category cat=this.catrepo.findById(catId).orElseThrow(()->new ResourceNotFoundException
-				                                     ("Category", "Category Id",catId));
-
-		 cat.setCategoryDesc(categoryDto.getCategoryDesc());
-		 cat.setCategoryTitle(categoryDto.getCategoryTitle());
-		 this.catrepo.save(cat);
-		 
+				("Category", "Category Id",catId));
+		cat.setCategoryDesc(categoryDto.getCategoryDesc());
+		cat.setCategoryTitle(categoryDto.getCategoryTitle());
+		this.catrepo.save(cat);
 		return this.modelMap.map(cat, categoryDto.getClass());
 	}
-
-	
-
-
-
 	@Override
 	public List<CategoryDto> getCategories() {
 		List<Category> category=this.catrepo.findAll();
-	
 		List<CategoryDto> catDto=category.stream().map((cat)-> this.modelMap.map(cat, CategoryDto.class)).collect(Collectors.toList());
 		return catDto	;
 	}
@@ -59,7 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteCategory(Integer catId) {
 		Category cat=this.catrepo.findById(catId).orElseThrow(()-> new ResourceNotFoundException("Category","categiory ID", catId));
-		
 		this.catrepo.delete(cat);
 	}
 
