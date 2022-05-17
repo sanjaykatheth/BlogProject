@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.blog.blogging.entities.Category;
@@ -68,9 +69,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostsResponse getAllPosts(Integer pageNo,Integer pageSize) {
+	public PostsResponse getAllPosts(Integer pageNo,Integer pageSize,String sortBy) {
 		
-	    PageRequest p = PageRequest.of(pageNo, pageSize);
+	    PageRequest p = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 		Page<Post> pageData=this.postRepo.findAll(p);
 		List<Post> allPost=pageData.getContent();
 		List<PostDto> allPostDto=allPost.stream().map((post)->this.modelMapper.map(allPost, PostDto.class)).collect(Collectors.toList());
