@@ -2,8 +2,6 @@ package com.blog.blogging.controllers;
 
 import java.util.List;
 
-import javax.persistence.PostUpdate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,6 +83,13 @@ public class PostController {
 		PostDto updated=this.postService.updatePost(postDto, postId);
 		return new ResponseEntity(updated,HttpStatus.OK);
 
+	}
+	
+	@GetMapping("/posts/search/{keywords}")
+	public ResponseEntity<?> searchPostsByTitle(@PathVariable("keywords") String keywords){
+		List<PostDto> result = this.postService.searchPosts(keywords);
+		return new ResponseEntity(result,HttpStatus.OK);
+		
 	}
 
 }
