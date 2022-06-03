@@ -1,15 +1,8 @@
 package com.blog.blogging.payloads;
 
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import com.blog.blogging.entities.Category;
-import com.blog.blogging.entities.User;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PostDto {
 	
@@ -21,7 +14,17 @@ public class PostDto {
 	private CategoryDto category;
 	private UserDto user;
 	
-    public String getTitle() {
+	private Set<CommentDto> comments=new HashSet<>();
+
+	
+	
+	public Set<CommentDto> getComments() {
+		return comments;
+	}
+	public void setComments(Set<CommentDto> comments) {
+		this.comments = comments;
+	}
+	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
@@ -57,6 +60,13 @@ public class PostDto {
 	public void setUser(UserDto user) {
 		this.user = user;
 	}
+	public Integer getPostId() {
+		return postId;
+	}
+	public void setPostId(Integer postId) {
+		this.postId = postId;
+	}
+
 
 
 }

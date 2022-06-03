@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blog.blogging.entities.Role;
 import com.blog.blogging.entities.User;
 import com.blog.blogging.exceptions.ResourceNotFoundException;
+import com.blog.blogging.payloads.AppConstant;
 import com.blog.blogging.payloads.UserDto;
+import com.blog.blogging.repositories.RoleRepository;
 import com.blog.blogging.repositories.UserRepo;
 import com.blog.blogging.service.UserService;
 
@@ -18,7 +22,12 @@ import com.blog.blogging.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
+	private PasswordEncoder passwordEncode;
+	@Autowired
 	private UserRepo userRepo;
+
+	@Autowired
+	private RoleRepository roleRepo;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -68,13 +77,13 @@ public class UserServiceImpl implements UserService {
 
 	private User dtoToUser(UserDto userDto)
 	{
-		
+
 		User user= this.modelMapper.map(userDto, User.class);
 		//User user=new User();
-//		user.setName(userDto.getName());
-//		user.setEmail(userDto.getEmail());
-//		user.setAbout(userDto.getAbout());
-//		user.setPassword(userDto.getPassword());
+		//		user.setName(userDto.getName());
+		//		user.setEmail(userDto.getEmail());
+		//		user.setAbout(userDto.getAbout());
+		//		user.setPassword(userDto.getPassword());
 		return user;
 	}
 
@@ -82,12 +91,26 @@ public class UserServiceImpl implements UserService {
 
 		UserDto userDto=this.modelMapper.map(user, UserDto.class);
 
-//		UserDto userDto=new UserDto();
-//		userDto.setAbout(user.getAbout());
-//		userDto.setName(user.getName());
-//		userDto.setEmail(user.getEmail());
-//		userDto.setPassword(user.getPassword());
+		//		UserDto userDto=new UserDto();
+		//		userDto.setAbout(user.getAbout());
+		//		userDto.setName(user.getName());
+		//		userDto.setEmail(user.getEmail());
+		//		userDto.setPassword(user.getPassword());
 		return userDto;
 
+	}
+
+	@Override
+	public UserDto registerNewUser(UserDto userDto) {
+
+		User user = this.modelMapper.map(userDto,User.class);
+		user.setPassword(this.passwordEncode.encode(userDto.getPassword()));
+
+
+		Role role = this.roleRepo.findById(AppConstant.NORMAL_USER).get();
+		user.getRole().add(role);
+
+		User saveUser = this.userRepo.save(user);
+		return this.modelMapper.map(saveUser, UserDto.class);
 	}
 }

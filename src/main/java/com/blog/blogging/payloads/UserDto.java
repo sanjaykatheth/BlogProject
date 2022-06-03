@@ -1,9 +1,12 @@
 package com.blog.blogging.payloads;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
 
 public class UserDto {
 
@@ -21,6 +24,10 @@ public class UserDto {
 
 	@NotBlank
 	private String about;
+
+	private String message;
+	private Set<RoleDto> role=new HashSet<>();
+
 
 	public String getName() {
 		return name;
@@ -57,6 +64,16 @@ public class UserDto {
 	public UserDto() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public Set<RoleDto> getRole() {
+		return role;
+	}
+	public void setRole(Set<RoleDto> role) {
+		this.role = role;
+	}
+	public UserDto(@NotBlank @Size(min = 4, message = "username must be ") String name) {
+		super();
+		this.name = name;
 	}
 
 

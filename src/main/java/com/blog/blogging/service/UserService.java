@@ -2,6 +2,8 @@ package com.blog.blogging.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.blog.blogging.payloads.UserDto;
 
 
@@ -11,5 +13,6 @@ public interface UserService {
 	 UserDto getUserById(Integer userId);
 	 List<UserDto> getAllUser();
 	 void deleteUser(Integer userId);
+	UserDto registerNewUser(UserDto userDto);
 	 
 }

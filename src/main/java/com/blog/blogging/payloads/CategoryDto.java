@@ -1,10 +1,5 @@
 package com.blog.blogging.payloads;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 public class CategoryDto {
 
 	private Integer categoryId;

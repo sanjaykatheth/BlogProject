@@ -8,14 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.ManyToAny;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Post {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer postId;
 	private String title;
 	
@@ -23,12 +22,19 @@ public class Post {
 	private String content;
 	private String imageName;
 	private Date addedDate;	
+	private String sanjay;
+	
+	@OneToOne
+	private Comment comments;
 	
 	@ManyToOne
 	private Category category;
 	
 	@ManyToOne
 	private User user;
+ 
+	
+
 
 	public Integer getPostId() {
 		return postId;
@@ -86,22 +92,4 @@ public class Post {
 		this.user = user;
 	}
 
-	public Post(Integer postId, String title, String content, String imageName, Date addedDate, Category category,
-			User user) {
-		super();
-		this.postId = postId;
-		this.title = title;
-		this.content = content;
-		this.imageName = imageName;
-		this.addedDate = addedDate;
-		this.category = category;
-		this.user = user;
-	}
-
-	public Post() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	
 }

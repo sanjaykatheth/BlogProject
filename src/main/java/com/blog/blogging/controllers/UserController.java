@@ -4,11 +4,10 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,13 +35,13 @@ public class UserController {
 	@PostMapping("/")
 	public ResponseEntity<?> createdUser(@Valid @RequestBody  UserDto userDto){
 		boolean flag=false;
-		Optional<String> userData=this.userRepo.findByEmail(userDto.getEmail());
-	       if(userData.isPresent()) {
-	    	   return ResponseEntity.ok(new ApiReponse("user is presend", flag));
-	   		  }
-			
-			return new ResponseEntity<>(this.userService.createUser(userDto),HttpStatus.CREATED);
+		Optional<String> userData=this.userRepo.findByEmails(userDto.getEmail());
+		if(userData.isPresent()) {
+			return ResponseEntity.ok(new ApiReponse("user is presend", flag));
 		}
+
+		return new ResponseEntity<>(this.userService.createUser(userDto),HttpStatus.CREATED);
+	}
 
 
 	@PutMapping("/{userId}")
@@ -54,6 +53,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{userId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> deleteUser(@PathVariable Integer userId)
 	{
 		this.userService.deleteUser(userId);
